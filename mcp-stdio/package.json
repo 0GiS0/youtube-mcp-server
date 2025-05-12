@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.2",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "googleapis": "^148.0.0",
     "zod": "^3.24.4"
   },
