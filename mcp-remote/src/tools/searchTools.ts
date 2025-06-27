@@ -22,7 +22,7 @@ const searchVideo: tool<{
             .optional()
             .describe("The search query for the video"),
     },
-    handler: async ({ q }, extra: RequestHandlerExtra) => {
+    handler: async ({ q }, extra: RequestHandlerExtra<any, any>) => {
 
         const res = await youtube.search.list({
             part: ['snippet'],
