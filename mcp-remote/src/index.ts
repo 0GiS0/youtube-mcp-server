@@ -12,7 +12,7 @@ let transport: SSEServerTransport;
 // Create a new McpServer instance
 const server = new McpServer({
   name: "remote-mcp-server",
-  version: "1.0.0",
+  version: "2.0.0",
 });
 
 // Register the tools
