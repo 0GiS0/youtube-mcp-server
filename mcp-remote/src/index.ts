@@ -4,7 +4,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { searchTools } from "./tools/searchTools.js";
 import { searchPrompts } from "./prompts/searchPrompts.js";
-import { youtubeResources } from "./resources/youtubeResources.js";
+import { resources } from "./resources/staticResources.js";
 import { randomUUID } from "node:crypto";
 
 import * as dotenv from "dotenv";
@@ -145,13 +145,8 @@ app.post("/mcp", requireAuth(), async (req, res) => {
     });
 
     // Register static resources
-    youtubeResources.forEach((resource) => {
-      server.registerResource(
-        resource.name,
-        resource.uri,
-        resource.config,
-        resource.handler
-      );
+    resources.forEach((resource) => {
+      server.registerResource(resource.name,resource.uri, resource.config, resource.handler)
     });
 
     // Connect to the MCP server
