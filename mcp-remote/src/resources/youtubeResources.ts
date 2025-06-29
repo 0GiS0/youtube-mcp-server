@@ -12,7 +12,7 @@ export const youtubeResources = [
       contents: [
         {
           uri: uri.href,
-          text: "My Youtube Channel",
+          text: `My Youtube Channel ${uri.href}`,
         },
       ],
     }),

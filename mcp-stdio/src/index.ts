@@ -36,6 +36,25 @@ server.tool(
     // Handler for the tool (function to be executed when the tool is called)
     async ({ query }) => {
 
+        // If the user pass the complete URL, extract the channel handle
+        if (query.startsWith("https://www.youtube.com/")) {
+            const url = new URL(query);
+            if (url.pathname.startsWith("/channel/")) {
+                query = url.pathname.split("/channel/")[1];
+            } else if (url.pathname.startsWith("/c/")) {
+                query = url.pathname.split("/c/")[1];
+            } else if (url.pathname.startsWith("/user/")) {
+                query = url.pathname.split("/user/")[1];
+            } else if (url.pathname.startsWith("/@")) {
+                // Handle URLs like https://www.youtube.com/@returngis
+                // Remove the leading slash and the '@' symbol
+                query = url.pathname.replace("/", "").replace(/^@/, "");
+            } else if (url.searchParams.has("channelId")) {
+                query = url.searchParams.get("channelId") || "";
+            } else {
+                throw new Error("Invalid YouTube channel URL");
+            }
+        }
 
         // Call the youtube API for seach channels
         const res = await youtube.channels.list({
