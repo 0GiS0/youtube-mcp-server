@@ -16,7 +16,11 @@
   "servers": {
     "remote-mcp": {
       "type": "http",
-      "url": "http://localhost:3001/mcp"
+      "url": "http://localhost:3001/mcp",
+      "dev": {
+        "watch": "mcp-remote/dist/src/**/*.js",
+        "debug": { "type": "node" }
+      }
     },
     "stdio-mcp": {
       "type": "stdio",
@@ -26,7 +30,11 @@
       ],
       "env": {
         "YOUTUBE_API_KEY": "${input:youtube_api_key}"
+      },
+      "dev": {
+        "watch": "mcp-stdio/dist/src/**/*.js",
+        "debug": { "type": "node" }
       }
     }
-  } 
+  }
 }
