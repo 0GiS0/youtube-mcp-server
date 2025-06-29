@@ -1,4 +1,5 @@
 
+import { z } from "zod";
 export const searchPrompts = [
   {
     name: "search_based_on_codebase",
@@ -7,16 +8,19 @@ export const searchPrompts = [
       description: "Search for YouTube videos that are relevant to the codebase.",
       argsSchema: { language: z.string() },
     },
-    handler: ({ language }: { language: string }) => ({
-      messages: [
-        {
-          role: "user" as const,
-          content: {
-            type: "text" as const,
-            text: `Search for YouTube videos that are relevant to the codebase in ${language} language.`,
+    handler: (args: { [x: string]: any; language?: unknown }) => {
+      const language = typeof args.language === "string" ? args.language : "en";
+      return {
+        messages: [
+          {
+            role: "user" as const,
+            content: {
+              type: "text" as const,
+              text: `Search for YouTube videos that are relevant to the codebase in ${language} language.`,
+            },
           },
-        },
-      ],
-    }),
+        ],
+      };
+    },
   },
 ];
