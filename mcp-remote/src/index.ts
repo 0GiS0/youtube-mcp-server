@@ -4,7 +4,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { searchTools } from "./tools/searchTools.js";
 import { searchPrompts } from "./prompts/searchPrompts.js";
-import { z } from "zod";
+import { youtubeResources } from "./resources/youtubeResources.js";
 import { randomUUID } from "node:crypto";
 
 import * as dotenv from "dotenv";
@@ -125,6 +125,12 @@ app.post("/mcp", requireAuth(), async (req, res) => {
     const server = new McpServer({
       name: "remote-mcp-server",
       version: "2.0.0",
+      capabilities: {
+        resources: {
+          subscribe: true, //whether the client can subscribe to be notified of changes to individual resources.
+          listChanged: true, // whether the server will emit notifications when the list of available resources changes.
+        },
+      },
     });
 
     // ... set up server resources, tools, and prompts ...
@@ -138,10 +144,15 @@ app.post("/mcp", requireAuth(), async (req, res) => {
       server.registerPrompt(prompt.name, prompt.config, prompt.handler);
     });
 
-    // Register resources
-    // searchResources.forEach((resource) => {
-    //   server.registerResource(resource.name, resource.config, resource.handler);
-    // });
+    // Register static resources
+    youtubeResources.forEach((resource) => {
+      server.registerResource(
+        resource.name,
+        resource.uri,
+        resource.config,
+        resource.handler
+      );
+    });
 
     // Connect to the MCP server
     await server.connect(transport);
