@@ -87,21 +87,6 @@ Ahora los MCP servers pueden traer consigo prompts que se pueden usar directamen
 Los MCP servers ahora pueden registrar recursos estáticos que se pueden acceder directamente desde el chat de GitHub Copilot. Esto permite que los usuarios puedan acceder a información adicional, como documentación, imágenes o cualquier otro recurso relevante, sin necesidad de salir del chat. Estos recursos se definen en el archivo `mcp-remote/src/resources/staticResources.ts`.
 
 
-# Diferencia #6: Sampling
-
-El sampling es una técnica fundamental en los modelos de lenguaje que consiste en seleccionar la siguiente palabra o token de una distribución de probabilidad, en lugar de elegir siempre la opción más probable. Esto permite generar respuestas más variadas, creativas y menos deterministas.
-
-En la especificación MCP, se ha añadido soporte para configurar los parámetros de sampling directamente desde el servidor. Los parámetros más habituales que puedes ajustar son:
-
-- **temperature**: Controla la aleatoriedad de las respuestas. Valores bajos (por ejemplo, 0.1-0.3) hacen que el modelo sea más conservador y repetitivo; valores altos (por ejemplo, 0.7-1.0) aumentan la creatividad y diversidad.
-- **top_p (nucleus sampling)**: Limita la selección a un subconjunto de tokens cuya probabilidad acumulada no supera el valor de top_p (por ejemplo, 0.9). Esto ayuda a evitar respuestas incoherentes pero mantiene variedad.
-- **top_k**: Limita la selección a los k tokens más probables. Por ejemplo, top_k=40 significa que solo se consideran los 40 tokens más probables en cada paso.
-
-Gracias a este soporte, los desarrolladores pueden ajustar la creatividad y diversidad de las respuestas generadas por el modelo según el caso de uso: respuestas más precisas y seguras para tareas críticas, o más creativas y abiertas para brainstorming, generación de ideas, etc.
-
-En MCP, estos parámetros pueden ser configurados desde el servidor y, en algunos casos, también expuestos al usuario final para que los ajuste según sus necesidades.
-
-
 ## MCP servers de ejemplo
 
 En este repositorio he dejado dos ejemplos de servidores MCP que puedes usar para probar tanto el transporte stdio como sse. Estos servidores son muy simples y están creados en Node.js con Typescript. 
