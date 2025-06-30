@@ -5,17 +5,18 @@
       "id": "youtube_api_key",
       "description": "YouTube API Key",
       "password": true
-    }   
+    }
   ],
   "servers": {
-    "remote-mcp": {
+    "remote-streamable-http-mcp": {
       "type": "http",
-      "url": "http://localhost:3001/mcp",
+      "url": "http://localhost:3002/mcp",
       "dev": {
         "watch": "mcp-remote/dist/src/**/*.js",
         "debug": { "type": "node" }
       }
     },
+
     "stdio-mcp": {
       "type": "stdio",
       "command": "node",

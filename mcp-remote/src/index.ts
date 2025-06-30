@@ -15,7 +15,7 @@ import {
 } from "@modelcontextprotocol/sdk/server/auth/errors.js";
 dotenv.config();
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const ISSUER = process.env.ISSUER;
 
 /********** Auth configuration *************/
