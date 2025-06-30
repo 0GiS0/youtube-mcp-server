@@ -5,13 +5,7 @@
       "id": "youtube_api_key",
       "description": "YouTube API Key",
       "password": true
-    },
-    {
-      "id": "ado_org",
-      "type": "promptString",
-      "description": "Azure DevOps organization name (e.g. 'contoso')",
-      "password": false
-    }
+    }   
   ],
   "servers": {
     "remote-mcp": {
