@@ -59,7 +59,7 @@ const requireAuth = (): RequestHandler => {
         );
       }
 
-      // TODO: add validation here if you need to verify access token
+      // Aquí debería validarse que el token es válido, que tiene los claims que se necesitan, etc.
 
       next();
     } catch (error) {
