@@ -1,3 +1,13 @@
 {
-  "chat.mcp.discovery.enabled": true  
+  "chat.mcp.discovery.enabled": true,
+  "chat.mcp.serverSampling": {
+    "mcp-github-copilot/.vscode/mcp.json: remote-streamable-http-mcp": {
+      "allowedModels": [
+        "github.copilot-chat/claude-opus-4",
+        "github.copilot-chat/claude-3.7-sonnet",
+        "github.copilot-chat/gpt-4.1",
+        "github.copilot-chat/gemini-2.0-flash-001"
+      ]
+    }
+  }
 }

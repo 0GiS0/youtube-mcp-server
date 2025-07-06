@@ -5,6 +5,7 @@ import { google } from "googleapis";
 import { z } from "zod";
 import { tool } from "./types.js";
 import { CreateMessageResultSchema } from "@modelcontextprotocol/sdk/types.js";
+import chalk from "chalk";
 
 const youtube = google.youtube({
   version: "v3",
@@ -20,6 +21,8 @@ const searchVideo: tool<{
     q: z.string().optional().describe("The search query for the video"),
   },
   handler: async ({ q }, extra: RequestHandlerExtra<any, any>) => {
+    console.log(chalk.blue("🔍 [SEARCH]"), chalk.white(`Searching YouTube for: "${q}"`));
+    
     const res = await youtube.search.list(
       {
         part: ["snippet"],
@@ -31,6 +34,8 @@ const searchVideo: tool<{
       {}
     );
 
+    console.log(chalk.green("📊 [RESULTS]"), chalk.white(`Found ${res.data.items?.length || 0} videos`));
+    
     console.table(
       res.data.items?.map((item) => ({
         Title: item.snippet?.title,
@@ -50,6 +55,8 @@ const searchVideo: tool<{
     //     formattedResults += `**Published At:** ${item.snippet?.publishedAt}\n\n`;
     //     formattedResults += `**Link:** [Watch Video](https://www.youtube.com/watch?v=${item.id?.videoId})\n\n`;
     // });
+    console.log(chalk.cyan("🤖 [AI]"), chalk.white("Requesting AI formatting of results"));
+    
     const result = await extra.sendRequest(
       {
         method: "sampling/createMessage",
@@ -80,8 +87,9 @@ const searchVideo: tool<{
 
     const completion = result.content.text;    
     // console.log("🧠 Model used: ", result.model);
-    console.log("🧠 Model used: ", result.model);
-    console.log("Formatted Results:", completion);
+    console.log(chalk.magenta("🧠 [AI MODEL]"), chalk.yellow(result.model));
+    console.log(chalk.green("📝 [FORMATTED]"), chalk.white("AI formatted results ready"));
+    console.log(chalk.gray("📄 [PREVIEW]"), chalk.white(typeof completion === "string" ? completion.substring(0, 100) + "..." : "Content generated"));
 
     return {
       content: [
