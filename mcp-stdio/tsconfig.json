@@ -10,6 +10,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+
+    // Enable breakpoints in TypeScript files
+    "sourceMap": true
     
   },
   "include": [
