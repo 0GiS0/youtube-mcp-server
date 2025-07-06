@@ -15,7 +15,7 @@
   "description": "",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.0.1",
     "express": "^5.0.1",
     "googleapis": "^150.0.1",
     "zod": "^3.24.2"
