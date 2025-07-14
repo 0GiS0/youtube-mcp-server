@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.15.0",
+    "@modelcontextprotocol/sdk": "^1.15.1",
     "dotenv": "^17.2.0",
     "googleapis": "^150.0.1",
     "zod": "^4.0.2"
