@@ -111,12 +111,12 @@ npm run dev
 
 ### 🏗️ Construir la imagen Docker
 ```bash
-docker build -t unified-mcp-server .
+docker build -t youtube-mcp-server .
 ```
 
 ### 🚀 Ejecutar el contenedor
 ```bash
-docker run --rm -i -e YOUTUBE_API_KEY=tu_api_key_aqui unified-mcp-server
+docker run --rm -i -e YOUTUBE_API_KEY=tu_api_key_aqui youtube-mcp-server
 ```
 
 ### 🎯 ¿Por qué Docker con STDIO?
@@ -134,7 +134,7 @@ Este es el corazón del experimento. La configuración en `.vscode/mcp.json` est
 ```json
 {
     "servers": {
-        "unified-mcp": {
+        "youtube-mcp": {
             "type": "stdio",
             "command": "docker",
             "args": [
@@ -143,7 +143,7 @@ Este es el corazón del experimento. La configuración en `.vscode/mcp.json` est
                 "-i",
                 "--env",
                 "YOUTUBE_API_KEY=${input:youtube_api_key}",
-                "unified-mcp-server"
+                "youtube-mcp-server"
             ]
         }
     },
@@ -205,20 +205,6 @@ graph TD
     C -->|STDIO| B
     B -->|STDIO| A
 ```
-
-## 🔬 Experimentos Previos
-
-Este repositorio también contiene implementaciones anteriores que sirvieron como base:
-
-### 📡 mcp-remote
-- **Transporte**: SSE (Server-Sent Events)
-- **Tecnología**: Express.js
-- **Estado**: Legacy - Funcional pero no dockerizado
-
-### 💻 mcp-stdio
-- **Transporte**: STDIO
-- **Ejecución**: Local con Node.js
-- **Estado**: Legacy - Base para la versión dockerizada
 
 ## 🤔 ¿Qué es Model Context Protocol?
 
