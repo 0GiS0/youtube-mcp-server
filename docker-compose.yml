@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  unified-mcp-server:
+    build: .
+    image: unified-mcp-server:latest
+    container_name: unified-mcp-server
+    environment:
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    driver: bridge

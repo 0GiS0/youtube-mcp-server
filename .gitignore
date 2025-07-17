@@ -1,0 +1,29 @@
+# Archivos compilados
+build/
+dist/
+
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archivos temporales
+.tmp
+.temp
+
+# IDE
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Cache
+.npm
+.eslintcache

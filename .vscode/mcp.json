@@ -1,25 +1,37 @@
 {
     "servers": {
-        "remote-mcp": {
-            "type": "sse",
-            "url": "http://localhost:3001/sse"
-        },
-        "stdio-mcp": {
+        "unified-mcp": {
             "type": "stdio",
-            "command": "node",
+            "command": "docker",
             "args": [
-                "/Users/gis/Desktop/Dev/mcp-github-copilot/mcp-stdio/build/index.js"
-            ],
-            "env": {
-                "YOUTUBE_API_KEY": "${input:youtube_api_key}"
-            },
-            "dev": {
-                "watch": "mcp-stdio/**/*.ts",
-                "debug": {
-                    "type": "node"
-                }
-            }
-        }
+                "run",
+                "--rm",
+                "-i",
+                "--env",
+                "YOUTUBE_API_KEY=${input:youtube_api_key}",
+                "unified-mcp-server"
+            ]
+        },
+        // "remote-mcp": {
+        //     "type": "sse",
+        //     "url": "http://localhost:3001/sse"
+        // },
+        // "stdio-mcp": {
+        //     "type": "stdio",
+        //     "command": "node",
+        //     "args": [
+        //         "/Users/gis/Desktop/Dev/mcp-github-copilot/mcp-stdio/build/index.js"
+        //     ],
+        //     "env": {
+        //         "YOUTUBE_API_KEY": "${input:youtube_api_key}"
+        //     },
+        //     "dev": {
+        //         "watch": "mcp-stdio/**/*.ts",
+        //         "debug": {
+        //             "type": "node"
+        //         }
+        //     }
+        // }
     },
     "inputs": [
         {

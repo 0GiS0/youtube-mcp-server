@@ -1,15 +1,17 @@
 {
-  "name": "mcp-stdio-server",
+  "name": "unified-mcp-server",
   "version": "1.0.0",
   "author": "Gisela Torres",
   "license": "ISC",
-  "description": "",
-  "main": "index.js",
+  "description": "Unified MCP Server with YouTube search tools using stdio transport",
+  "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc &&  chmod 755 build/index.js"
+    "build": "tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsc --watch"
   },
-  "keywords": [],
+  "keywords": ["mcp", "youtube", "search", "video", "channel"],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.15.0",
     "dotenv": "^17.2.0",
@@ -17,7 +19,6 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.10",
-    "shx": "^0.4.0",
     "typescript": "^5.8.3"
   },
   "files": [

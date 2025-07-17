@@ -7,7 +7,7 @@ import { google } from "googleapis";
 
 // Create a server instance
 const server = new McpServer({
-  name: "mcp-stdio-server",
+  name: "youtube-mcp-server",
   version: "1.0.0",
 });
 
@@ -17,13 +17,63 @@ const youtube = google.youtube({
   auth: process.env.YOUTUBE_API_KEY,
 });
 
-// Tools
-// https://modelcontextprotocol.io/docs/concepts/tools#tool-definition-structure
-
+// Tool 1: Search for videos on YouTube
 server.registerTool(
-  // Name of the tool (used to call it)
+  "search_video",
+  {
+    title: "Search Youtube video",
+    description: "Search for a video on YouTube",
+    inputSchema: {
+      q: z.string().describe("The search query for the video")
+    },
+  },
+  async ({ q }) => {
+    console.log("Calling search_video with query:", q);
+
+    const res = await youtube.search.list({
+      part: ['snippet'],
+      q: q,
+      type: ['video'],
+      maxResults: 5,
+      order: 'relevance',
+    }, {});
+
+    console.table(
+      res.data.items?.map((item) => ({
+        Title: item.snippet?.title,
+        Description: item.snippet?.description,
+        Thumbnail: item.snippet?.thumbnails?.default?.url,
+        Channel: item.snippet?.channelTitle,
+        PublishedAt: item.snippet?.publishedAt,
+      }))
+    );
+
+    let formattedResults = "";
+    res.data.items?.forEach((item) => {
+      formattedResults += `\n\n**Title:** ${item.snippet?.title}\n\n`;
+      formattedResults += `**Description:** ${item.snippet?.description}\n\n`;
+      formattedResults += `**Thumbnail:** ![Thumbnail](${item.snippet?.thumbnails?.default?.url})\n\n`;
+      formattedResults += `**Channel:** ${item.snippet?.channelTitle}\n\n`;
+      formattedResults += `**Published At:** ${item.snippet?.publishedAt}\n\n`;
+      formattedResults += `**Link:** [Watch Video](https://www.youtube.com/watch?v=${item.id?.videoId})\n\n`;
+    });
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: formattedResults.length > 0
+            ? `# Search results for "${q}"\n\n${formattedResults}`
+            : `No results found for "${q}"`,
+        }
+      ]
+    };
+  }
+);
+
+// Tool 2: Get YouTube channel by name
+server.registerTool(
   "get_youtube_channel",
-  // Schema para la herramienta (input validation)
   {
     title: "Get YouTube Channel",
     description: "Search for a YouTube channel by its name.",
@@ -31,11 +81,10 @@ server.registerTool(
       query: z.string().describe("The name of the YouTube channel to search for")
     },
   },
-  // Handler for the tool (function to be executed when the tool is called)
   async ({ query }) => {
     console.log("Calling get_youtube_channel with query:", query);
 
-    // Call the youtube API for seach channels
+    // Call the youtube API for search channels
     const res = await youtube.channels.list(
       {
         part: ["snippet"],
@@ -87,7 +136,7 @@ async function main() {
   // Connect the server to the transport
   await server.connect(transport);
 
-  console.error("This MCP Server is running on stdio 🖥️");
+  console.error("Unified MCP Server is running on stdio 🖥️");
 }
 
 main().catch((error) => {
