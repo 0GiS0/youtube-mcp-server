@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.15.0",
+    "@modelcontextprotocol/sdk": "^1.17.3",
     "dotenv": "^17.2.0",
     "googleapis": "^153.0.0"
   },
