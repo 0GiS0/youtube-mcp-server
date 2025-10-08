@@ -1,29 +1,30 @@
+// 📦 Importar las dependencias necesarias
 import * as dotenv from "dotenv";
-dotenv.config();
+dotenv.config(); // 🔐 Cargar las variables de entorno desde el archivo .env
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
-import { google } from "googleapis";
+import { z } from "zod"; // 📝 Librería para validación de esquemas
+import { google } from "googleapis"; // 🎥 Cliente oficial de APIs de Google
 
-// Create a server instance
+// 🚀 Crear una instancia del servidor MCP (Model Context Protocol)
 const server = new McpServer({
   name: "mcp-stdio-server",
   version: "1.0.0",
 });
 
-// Load the Google APIs client library
+// 🎬 Configurar el cliente de YouTube API v3 con la clave de autenticación
 const youtube = google.youtube({
   version: "v3",
-  auth: process.env.YOUTUBE_API_KEY,
+  auth: process.env.YOUTUBE_API_KEY, // 🔑 API Key obtenida de las variables de entorno
 });
 
-// Tools
-// https://modelcontextprotocol.io/docs/concepts/tools#tool-definition-structure
+// 🛠️ Definir las herramientas (Tools) del servidor
+// 📚 Documentación: https://modelcontextprotocol.io/docs/concepts/tools#tool-definition-structure
 
 server.registerTool(
-  // Name of the tool (used to call it)
+  // 📌 Nombre de la herramienta (se usa para invocarla desde el cliente)
   "get_youtube_channel",
-  // Schema para la herramienta (input validation)
+  // 📋 Esquema de la herramienta (define cómo se valida la entrada)
   {
     title: "Get YouTube Channel",
     description: "Search for a YouTube channel by its name.",
@@ -31,21 +32,21 @@ server.registerTool(
       query: z.string().describe("The name of the YouTube channel to search for")
     },
   },
-  // Handler for the tool (function to be executed when the tool is called)
+  // ⚡ Handler: función que se ejecuta cuando se llama a la herramienta
   async ({ query }) => {
     console.log("Calling get_youtube_channel with query:", query);
 
-    // Call the youtube API for seach channels
+    // 🔍 Llamar a la API de YouTube para buscar canales por handle
     const res = await youtube.channels.list(
       {
-        part: ["snippet"],
-        forHandle: query,
-        maxResults: 5,
+        part: ["snippet"], // 📄 Solicitar solo la información básica (snippet)
+        forHandle: query, // 🎯 Buscar por el handle del canal
+        maxResults: 5, // 🔢 Limitar a 5 resultados máximo
       },
       {}
     );
 
-    // Log the results to the console
+    // 📊 Mostrar los resultados en la consola en formato de tabla
     console.table(
       res.data.items?.map((item) => ({
         Title: item.snippet?.title,
@@ -57,7 +58,7 @@ server.registerTool(
       }))
     );
 
-    // Return the results to the client
+    // 📝 Formatear los resultados para devolverlos al cliente en Markdown
     let formattedResults = "";
     res.data.items?.forEach((item) => {
       formattedResults += `\n\n**Title:** ${item.snippet?.title}\n\n`;
@@ -67,6 +68,7 @@ server.registerTool(
       formattedResults += `**URL:** http://youtube.com/${item.snippet?.customUrl}\n\n`;
     });
 
+    // ✅ Devolver la respuesta formateada al cliente
     return {
       content: [
         {
@@ -74,23 +76,25 @@ server.registerTool(
           text:
             formattedResults.length > 0
               ? `# Search results for "${query}"\n\n${formattedResults}`
-              : `No results found for "${query}"`,
+              : `No results found for "${query}"`, // ❌ Mensaje si no hay resultados
         },
       ],
     };
   }
 );
 
+// 🎯 Función principal para iniciar el servidor
 async function main() {
-  // Start the server with Stdio transport
+  // 🔌 Iniciar el servidor con transporte Stdio (entrada/salida estándar)
   const transport = new StdioServerTransport();
-  // Connect the server to the transport
+  // 🤝 Conectar el servidor al transporte
   await server.connect(transport);
 
   console.error("This MCP Server is running on stdio 🖥️");
 }
 
+// 🏁 Ejecutar la función principal y manejar errores
 main().catch((error) => {
   console.error("👎🏻 Fatal error in main():", error);
-  process.exit(1);
+  process.exit(1); // 🛑 Salir del proceso con código de error
 });
