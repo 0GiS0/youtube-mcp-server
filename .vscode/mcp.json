@@ -21,7 +21,7 @@
       "type": "stdio",
       "command": "node",
       "args": [
-        "/Users/gis/Desktop/Dev/mcp-github-copilot/mcp-stdio/build/index.js"
+        "./mcp-stdio/build/index.js"
       ],
       "env": {
         "YOUTUBE_API_KEY": "${input:youtube_api_key}"

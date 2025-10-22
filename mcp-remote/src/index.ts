@@ -108,7 +108,9 @@ app.use(mcpMetadataRouter());
 const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {};
 
 // Handle POST requests for client-to-server communication
-app.post("/mcp", requireAuth(), async (req, res) => {
+// app.post("/mcp", requireAuth(), async (req, res) => {
+app.post("/mcp", async (req, res) => {
+
   console.log(chalk.cyan("🚀 [POST /mcp]"), chalk.blue("Incoming request received"));
   
   // Check for existing session ID
@@ -220,7 +222,8 @@ const handleSessionRequest = async (
 };
 
 // Handle GET requests for server-to-client notifications via SSE
-app.get("/mcp", requireAuth(), (req, res, next) => {
+// app.get("/mcp", requireAuth(), (req, res, next) => {
+app.get("/mcp", (req, res, next) => {
   console.log(chalk.magenta("📡 [SSE]"), chalk.blue("Server-to-client notifications endpoint"));
   handleSessionRequest(req, res);
 });
