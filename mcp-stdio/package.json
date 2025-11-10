@@ -11,14 +11,14 @@
   },
   "keywords": [],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.19.1",
+    "@modelcontextprotocol/sdk": "^1.21.1",
     "dotenv": "^17.2.3",
-    "googleapis": "^161.0.0"
+    "googleapis": "^165.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.0.10",
+    "@types/node": "^24.10.0",
     "shx": "^0.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   },
   "files": [
     "build"
