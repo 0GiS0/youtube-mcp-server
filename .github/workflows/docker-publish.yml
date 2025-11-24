@@ -29,10 +29,20 @@ jobs:
         id: prep
         run: echo "repo_lc=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          context: .
-          file: Dockerfile
+          images: |
+            ${{ env.repo_lc }}
+          tags: |
+            type=sha
+        env:
+          DOCKER_METADATA_SHORT_SHA_LENGTH: 12
+
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:         
           push: true
-          tags: ghcr.io/${{ env.repo_lc }}/youtube-mcp-server:${GITHUB_SHA}
+          tags: ${{ steps.meta.outputs.tags }}
