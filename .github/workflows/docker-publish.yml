@@ -3,7 +3,7 @@ name: Build and Publish Docker image
 on:
   push:
     branches:
-      - main
+      - docker
 
 jobs:
   build-and-push:
@@ -31,4 +31,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/mcp-server:latest
+          tags: ghcr.io/${{ github.repository.lower() }}/mcp-server:latest
