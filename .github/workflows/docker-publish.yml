@@ -34,7 +34,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.repo_lc }}
+             ghcr.io/${{ env.repo_lc }}
           tags: |
             type=sha
         env:
