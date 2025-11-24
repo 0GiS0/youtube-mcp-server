@@ -25,10 +25,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set lowercase repo name
+        id: prep
+        run: echo "repo_lc=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository.lower() }}/youtube-mcp-server:${GITHUB_SHA}
+          tags: ghcr.io/${{ env.repo_lc }}/youtube-mcp-server:${GITHUB_SHA}
