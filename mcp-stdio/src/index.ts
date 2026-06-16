@@ -18,6 +18,17 @@ const youtube = google.youtube({
   auth: process.env.YOUTUBE_API_KEY, // 🔑 API Key obtenida de las variables de entorno
 });
 
+function formatSubscriberCount(count?: string | null): string {
+  if (!count) {
+    return "N/A";
+  }
+
+  const parsedCount = Number(count);
+  return Number.isFinite(parsedCount)
+    ? parsedCount.toLocaleString("en-US")
+    : count;
+}
+
 // 🛠️ Definir las herramientas (Tools) del servidor
 // 📚 Documentación: https://modelcontextprotocol.io/docs/concepts/tools#tool-definition-structure
 
@@ -29,7 +40,9 @@ server.registerTool(
     title: "Get YouTube Channel",
     description: "Search for a YouTube channel by its name.",
     inputSchema: {
-      query: z.string().describe("The name of the YouTube channel to search for")
+      query: z
+        .string()
+        .describe("The name of the YouTube channel to search for"),
     },
   },
   // ⚡ Handler: función que se ejecuta cuando se llama a la herramienta
@@ -39,11 +52,11 @@ server.registerTool(
     // 🔍 Llamar a la API de YouTube para buscar canales por handle
     const res = await youtube.channels.list(
       {
-        part: ["snippet"], // 📄 Solicitar solo la información básica (snippet)
+        part: ["snippet", "statistics"], // 📄 Solicitar datos básicos y estadísticas
         forHandle: query, // 🎯 Buscar por el handle del canal
         maxResults: 5, // 🔢 Limitar a 5 resultados máximo
       },
-      {}
+      {},
     );
 
     // 📊 Mostrar los resultados en la consola en formato de tabla
@@ -51,18 +64,26 @@ server.registerTool(
       res.data.items?.map((item) => ({
         Title: item.snippet?.title,
         Description: item.snippet?.description,
+        Subscribers: item.statistics?.hiddenSubscriberCount
+          ? "Hidden"
+          : formatSubscriberCount(item.statistics?.subscriberCount),
         Thumbnail: item.snippet?.thumbnails?.default?.url,
         Language: item.snippet?.defaultLanguage,
         Country: item.snippet?.country,
         PublishedAt: item.snippet?.publishedAt,
-      }))
+      })),
     );
 
     // 📝 Formatear los resultados para devolverlos al cliente en Markdown
     let formattedResults = "";
     res.data.items?.forEach((item) => {
+      const subscriberCount = item.statistics?.hiddenSubscriberCount
+        ? "Hidden"
+        : formatSubscriberCount(item.statistics?.subscriberCount);
+
       formattedResults += `\n\n**Title:** ${item.snippet?.title}\n\n`;
       formattedResults += `**Description:** ${item.snippet?.description}\n\n`;
+      formattedResults += `**Subscribers:** ${subscriberCount}\n\n`;
       formattedResults += `**Thumbnail:** ![Thumbnail](${item.snippet?.thumbnails?.default?.url})\n\n`;
       formattedResults += `**Published At:** ${item.snippet?.publishedAt}\n\n`;
       formattedResults += `**URL:** http://youtube.com/${item.snippet?.customUrl}\n\n`;
@@ -80,7 +101,7 @@ server.registerTool(
         },
       ],
     };
-  }
+  },
 );
 
 // 🎯 Función principal para iniciar el servidor
