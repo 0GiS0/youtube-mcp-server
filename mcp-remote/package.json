@@ -23,6 +23,6 @@
   "devDependencies": {
     "@types/express": "^5.0.5",
     "shx": "^0.4.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
