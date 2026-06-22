@@ -13,7 +13,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
     "dotenv": "^17.2.3",
-    "googleapis": "^166.0.0"
+    "googleapis": "^173.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
